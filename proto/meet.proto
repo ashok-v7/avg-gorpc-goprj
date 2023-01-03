@@ -1,0 +1,56 @@
+//  IN this you define remote procedure calls that happen b/w client and server
+// actual code that happens to interact b/w client and server will be in pb.go files and this will be generated for us like meet.pb.go & meet.grpc.go files
+
+syntax="proto3";
+option go_package = "./proto";
+
+package meet_service;
+
+
+service MeetService{
+    
+    // 4 types of rpc calls
+    rpc SayHello(NoParam) returns(HelloResponse); // unary api
+
+    rpc SayHelloServerStreaming(NamesList) returns (stream HelloResponse); // Serverside streaming
+
+    rpc SayHelloClientStreaming(stream HelloRequest) returns  (MessageList); // clientSide streaming
+
+    rpc SayHelloBidirectionalStreaming(stream HelloRequest) returns (stream HelloResponse); // very common
+}
+
+message NoParam{};
+
+message HelloRequest{
+    string name = 1 ;
+}
+
+message HelloResponse{
+    string message = 1 ;
+}
+
+message NamesList{
+    repeated string names =1;
+};
+
+message MessageList{
+    repeated string messages = 1;
+
+};
+
+//  THIS is the proto file
+
+// now generate pb.go and grpc.pb.go files
+//https://grpc.io/docs/languages/go/quickstart/
+// https://grpc.io/docs/protoc-installation/ 
+/* 
+$ apt install -y protobuf-compiler
+$ protoc --version  # Ensure compiler version is 3+
+
+$ protoc --go_out=. --go-grpc_out=. proto/meet.proto
+
+*/
+
+
+
+
